@@ -7,10 +7,11 @@
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
 
-<script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js">
-</script>
+  <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js">
+  </script>
 
-  </head>
+</head>
+
   <body>
     <div id="unity-container" class="unity-desktop">
       <canvas id="unity-canvas" width=960 height=600></canvas>
@@ -64,11 +65,11 @@
       .then((data) => { 
          if (data.result) { 
             // Предзагруженные материалы есть
-            myGameInstance.SendMessage("RewardedAd", "buttonActivate");
+            myGameInstance.SendMessage("VK", "buttonActivate");
 
          } else {
           // Материалов нет
-          myGameInstance.SendMessage("RewardedAd", "buttonNotActivate");
+          myGameInstance.SendMessage("VK", "buttonNotActivate");
           checkRewardedAd();
          }    
       })
