@@ -6,6 +6,10 @@
     <title>Unity WebGL Player | test for VK</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
+
+<script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js">
+</script>
+
   </head>
   <body>
     <div id="unity-container" class="unity-desktop">
@@ -23,6 +27,60 @@
         <div id="unity-build-title">test for VK</div>
       </div>
     </div>
+
+
+
+
+
+
+
+<script>
+     //vk bridge 
+    vkBridge.send('VKWebAppInit');
+
+
+
+
+
+
+
+    function showRewardedAd(){
+        vkBridge.send('VKWebAppShowNativeAds', { ad_format: 'reward' })
+          .then((data) => {
+            if (data.result) // Успех 
+            {
+               console.log('Реклама показана');
+               checkRewardedAd();
+            } else // Ошибка 
+                console.log('Ошибка при показе');
+          })
+          .catch((error) => { console.log(error); /* Ошибка */ });
+      }
+
+    function checkRewardedAd(){
+      vkBridge.send('VKWebAppCheckNativeAds', {
+       ad_format: 'reward' /* Тип рекламы */ 
+      })
+      .then((data) => { 
+         if (data.result) { 
+            // Предзагруженные материалы есть
+            myGameInstance.SendMessage("RewardedAd", "buttonActivate");
+
+         } else {
+          // Материалов нет
+          myGameInstance.SendMessage("RewardedAd", "buttonNotActivate");
+          checkRewardedAd();
+         }    
+      })
+         .catch((error) => { console.log(error); });
+      }
+
+   </script>
+
+
+
+
+
     <script>
       var container = document.querySelector("#unity-container");
       var canvas = document.querySelector("#unity-canvas");
@@ -99,12 +157,16 @@
 
       loadingBar.style.display = "block";
 
+
+      var myGameInstance = null;
+
       var script = document.createElement("script");
       script.src = loaderUrl;
       script.onload = () => {
         createUnityInstance(canvas, config, (progress) => {
           progressBarFull.style.width = 100 * progress + "%";
         }).then((unityInstance) => {
+          myGameInstance = unityInstance;
           loadingBar.style.display = "none";
           fullscreenButton.onclick = () => {
             unityInstance.SetFullscreen(1);
