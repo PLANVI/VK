@@ -51,6 +51,10 @@
             if (data.result) // Успех 
             {
                console.log('Реклама показана');
+               myGameInstance.SendMessage("Shop", "coinPlus100");
+               myGameInstance.SendMessage("GameManager", "SavePlayerData");
+
+
                checkRewardedAd();
             } else // Ошибка 
                 console.log('Ошибка при показе');
