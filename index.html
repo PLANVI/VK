@@ -45,6 +45,7 @@
 
 
     ////////////// реклама за вознаграждение
+    
     function showRewardedAd(){
         vkBridge.send('VKWebAppShowNativeAds', { ad_format: 'reward' })
           .then((data) => {
